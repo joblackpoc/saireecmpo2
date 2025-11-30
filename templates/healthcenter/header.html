@@ -1,0 +1,62 @@
+
+  <header id="header" class="header d-flex align-items-center fixed-top">
+    <div class="container-fluid container-xl position-relative d-flex align-items-center">
+
+      <a href="{% url 'healthcenter:home' %}" class="logo d-flex align-items-center me-auto">
+        <!-- Uncomment the line below if you also wish to use an image logo -->
+        <!-- <img src="assets/img/logo.png" alt=""> -->
+        <h1 class="sitename">รพ.สต.หาดทรายรี</h1>
+      </a>
+
+      <nav id="navmenu" class="navmenu">
+        <ul>
+          <li><a href="{% url 'healthcenter:home' %}" class="active">Home</a></li>
+          <li><a href="{% url 'healthcenter:content' %}">เนื้อหา</a></li>
+          <li><a href="{% url 'healthcenter:about_list' %}">เกี่ยวกับเรา</a></li>
+          <li><a href="{% url 'healthcenter:home' %}">บริการ</a></li>
+          <li><a href="{% url 'healthcenter:home' %}">ผลงาน</a></li>
+          <li><a href="{% url 'healthcenter:home' %}">ทีมงาน</a></li>
+          <li class="dropdown"><a href="#"><span>เมนูเพิ่มเติม</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+            <ul>
+              <li><a href="{% url 'healthcenter:home_create' %}">Home Create</a></li>
+              <li class="dropdown"><a href="#"><span>Deep Dropdown</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+                <ul>
+                  <li><a href="{% url 'healthcenter:home_create' %}">Home Create</a></li>
+                  <li><a href="#">Deep Dropdown 2</a></li>
+                  <li><a href="#">Deep Dropdown 3</a></li>
+                  <li><a href="#">Deep Dropdown 4</a></li>
+                  <li><a href="#">Deep Dropdown 5</a></li>
+                </ul>
+              </li>
+              <li><a href="#">Dropdown 2</a></li>
+              <li><a href="#">Dropdown 3</a></li>
+              <li><a href="#">Dropdown 4</a></li>
+            </ul>
+          </li>
+          <li><a href="{% url 'healthcenter:home' %}#contact">ติดต่อเรา</a></li>
+        </ul>
+        <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+      </nav>
+
+      {% if user.is_authenticated %}
+        <div class="dropdown">
+          <a class="btn-getstarted dropdown-toggle" href="#" role="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="bi bi-person-circle"></i> {{ user.get_full_name|default:user.username }}
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+            <li><a class="dropdown-item" href="{% url 'accounts:profile' %}"><i class="bi bi-person"></i> โปรไฟล์</a></li>
+            <li><a class="dropdown-item" href="{% url 'accounts:change_password' %}"><i class="bi bi-key"></i> เปลี่ยนรหัสผ่าน</a></li>
+            {% if user.is_staff or user.is_superuser %}
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="{% url 'healthcenter:home' %}"><i class="bi bi-shield-lock"></i> Admin Panel</a></li>
+            {% endif %}
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="{% url 'accounts:logout' %}"><i class="bi bi-box-arrow-right"></i> ออกจากระบบ</a></li>
+          </ul>
+        </div>
+      {% else %}
+        <a class="btn-getstarted" href="{% url 'accounts:login' %}">เข้าสู่ระบบ</a>
+      {% endif %}
+
+    </div>
+  </header><!-- End Header -->

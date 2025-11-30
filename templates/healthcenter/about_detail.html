@@ -1,0 +1,264 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ about.title }} - Details</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        body {
+            background-color: #f8f9fa;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .header {
+            background: white;
+            padding: 20px 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .header h1 {
+            margin: 0;
+            color: #333;
+        }
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+        }
+        .btn-action {
+            padding: 10px 20px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-size: 0.875rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            border: none;
+            cursor: pointer;
+        }
+        .btn-back {
+            background-color: #6c757d;
+            color: white;
+        }
+        .btn-back:hover {
+            background-color: #545b62;
+            color: white;
+        }
+        .btn-edit {
+            background-color: #007bff;
+            color: white;
+        }
+        .btn-edit:hover {
+            background-color: #0056b3;
+            color: white;
+        }
+        .btn-delete {
+            background-color: #dc3545;
+            color: white;
+        }
+        .btn-delete:hover {
+            background-color: #c82333;
+            color: white;
+        }
+        .detail-container {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .detail-section {
+            margin-bottom: 30px;
+        }
+        .detail-section:last-child {
+            margin-bottom: 0;
+        }
+        .section-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #007bff;
+        }
+        .detail-field {
+            margin-bottom: 20px;
+        }
+        .field-label {
+            font-weight: 600;
+            color: #495057;
+            margin-bottom: 8px;
+            display: block;
+        }
+        .field-value {
+            color: #333;
+            line-height: 1.6;
+        }
+        .field-value.rich-text {
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 4px;
+            border-left: 4px solid #007bff;
+        }
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        .info-card {
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 4px;
+            border-left: 4px solid #28a745;
+        }
+        .info-card .icon {
+            font-size: 1.5rem;
+            color: #28a745;
+            margin-bottom: 10px;
+        }
+        .badge {
+            padding: 8px 16px;
+            border-radius: 4px;
+            font-size: 0.875rem;
+            display: inline-block;
+        }
+        .timestamp {
+            color: #6c757d;
+            font-size: 0.875rem;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #dee2e6;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1><i class="fas fa-info-circle"></i> About Us Details</h1>
+            <div class="action-buttons">
+                <a href="{% url 'healthcenter:about_list' %}" class="btn-action btn-back">
+                    <i class="fas fa-arrow-left"></i> Back to List
+                </a>
+                <a href="{% url 'healthcenter:about_update' about.pk %}" class="btn-action btn-edit">
+                    <i class="fas fa-edit"></i> Edit
+                </a>
+                <a href="{% url 'healthcenter:about_delete' about.pk %}" class="btn-action btn-delete">
+                    <i class="fas fa-trash"></i> Delete
+                </a>
+            </div>
+        </div>
+
+        <div class="detail-container">
+            <!-- Title Section -->
+            <div class="detail-section">
+                <h2 class="section-title">{{ about.title }}</h2>
+            </div>
+
+            <!-- Contact Information Grid -->
+            <div class="detail-section">
+                <div class="info-grid">
+                    {% if about.email %}
+                        <div class="info-card">
+                            <div class="icon"><i class="fas fa-envelope"></i></div>
+                            <div class="field-label">Email</div>
+                            <div class="field-value">
+                                <a href="mailto:{{ about.email }}">{{ about.email }}</a>
+                            </div>
+                        </div>
+                    {% endif %}
+
+                    {% if about.phone %}
+                        <div class="info-card">
+                            <div class="icon"><i class="fas fa-phone"></i></div>
+                            <div class="field-label">Phone</div>
+                            <div class="field-value">
+                                <a href="tel:{{ about.phone }}">{{ about.phone }}</a>
+                            </div>
+                        </div>
+                    {% endif %}
+
+                    {% if about.established_year %}
+                        <div class="info-card">
+                            <div class="icon"><i class="fas fa-calendar-alt"></i></div>
+                            <div class="field-label">Established Year</div>
+                            <div class="field-value">
+                                <span class="badge bg-info">{{ about.established_year }}</span>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Mission -->
+            <div class="detail-section">
+                <h3 class="section-title"><i class="fas fa-bullseye"></i> Mission</h3>
+                <div class="field-value rich-text">
+                    {{ about.mission|safe }}
+                </div>
+            </div>
+
+            <!-- Vision -->
+            <div class="detail-section">
+                <h3 class="section-title"><i class="fas fa-eye"></i> Vision</h3>
+                <div class="field-value rich-text">
+                    {{ about.vision|safe }}
+                </div>
+            </div>
+
+            <!-- Description -->
+            <div class="detail-section">
+                <h3 class="section-title"><i class="fas fa-align-left"></i> Description</h3>
+                <div class="field-value rich-text">
+                    {{ about.description|safe }}
+                </div>
+            </div>
+
+            <!-- History -->
+            {% if about.history %}
+                <div class="detail-section">
+                    <h3 class="section-title"><i class="fas fa-history"></i> History</h3>
+                    <div class="field-value rich-text">
+                        {{ about.history|safe }}
+                    </div>
+                </div>
+            {% endif %}
+
+            <!-- Address -->
+            <div class="detail-section">
+                <h3 class="section-title"><i class="fas fa-map-marker-alt"></i> Address</h3>
+                <div class="field-value rich-text">
+                    {{ about.address|safe }}
+                </div>
+            </div>
+
+            <!-- Working Hours -->
+            <div class="detail-section">
+                <h3 class="section-title"><i class="fas fa-clock"></i> Working Hours</h3>
+                <div class="field-value rich-text">
+                    {{ about.working_hours|safe }}
+                </div>
+            </div>
+
+            <!-- Timestamp -->
+            <div class="timestamp">
+                <i class="fas fa-clock"></i> Last Updated: {{ about.updated_at|date:"F d, Y H:i" }}
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

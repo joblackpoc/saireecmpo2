@@ -1,0 +1,367 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - รพ.สต.หาดทรายรี</title>
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com" rel="preconnect">
+    <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+    <!-- Bootstrap CSS -->
+    <link href="{% static 'assets/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/css/main.css' %}" rel="stylesheet">
+
+    <style>
+        .profile-container {
+            margin-top: 80px;
+            margin-bottom: 50px;
+        }
+        .profile-card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            overflow: hidden;
+            margin-bottom: 30px;
+        }
+        .profile-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 40px;
+            color: white;
+            text-align: center;
+        }
+        .profile-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 5px solid white;
+            object-fit: cover;
+            margin-bottom: 20px;
+        }
+        .profile-header h3 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+        .profile-header p {
+            opacity: 0.9;
+            margin-bottom: 0;
+        }
+        .profile-body {
+            padding: 40px;
+        }
+        .section-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #667eea;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            font-weight: 500;
+            color: #333;
+            margin-bottom: 8px;
+            display: block;
+        }
+        .form-control {
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            padding: 10px 15px;
+        }
+        .form-control:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            font-weight: 600;
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        .btn-outline-primary {
+            color: #667eea;
+            border-color: #667eea;
+            padding: 12px 30px;
+            border-radius: 8px;
+            font-weight: 600;
+        }
+        .btn-outline-primary:hover {
+            background: #667eea;
+            border-color: #667eea;
+        }
+        .security-info {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+        .security-info .info-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .security-info .info-item:last-child {
+            margin-bottom: 0;
+        }
+        .security-info .info-item i {
+            font-size: 1.5rem;
+            color: #667eea;
+            margin-right: 15px;
+        }
+        .security-info .info-item .info-content h6 {
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: #333;
+        }
+        .security-info .info-item .info-content p {
+            margin: 0;
+            color: #666;
+            font-size: 0.9rem;
+        }
+        .table {
+            margin-top: 20px;
+        }
+        .table thead {
+            background: #f8f9fa;
+        }
+        .badge {
+            padding: 6px 12px;
+            border-radius: 6px;
+        }
+        .session-item {
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+        .session-item .session-info {
+            flex: 1;
+        }
+        .session-item .session-actions {
+            margin-left: 15px;
+        }
+        .alert {
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container profile-container">
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="profile-card">
+                    <div class="profile-header">
+                        {% if user.profile_picture %}
+                            <img src="{{ user.profile_picture.url }}" alt="Profile" class="profile-avatar">
+                        {% else %}
+                            <img src="{% static 'assets/img/default-avatar.png' %}" alt="Profile" class="profile-avatar" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22120%22 height=%22120%22%3E%3Ccircle cx=%2260%22 cy=%2260%22 r=%2260%22 fill=%22%23ddd%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22 font-size=%2248%22 fill=%22%23666%22%3E{{ user.first_name.0|upper }}{{ user.last_name.0|upper }}%3C/text%3E%3C/svg%3E'">
+                        {% endif %}
+                        <h3>{{ user.get_full_name|default:user.username }}</h3>
+                        <p><i class="bi bi-envelope"></i> {{ user.email }}</p>
+                    </div>
+                    <div class="profile-body">
+                        <div class="security-info">
+                            <div class="info-item">
+                                <i class="bi bi-shield-check"></i>
+                                <div class="info-content">
+                                    <h6>Password Age</h6>
+                                    <p>{{ password_age }} days old</p>
+                                </div>
+                            </div>
+                            <div class="info-item">
+                                <i class="bi bi-calendar-event"></i>
+                                <div class="info-content">
+                                    <h6>Last Login</h6>
+                                    <p>{{ user.last_login|date:"M d, Y H:i" }}</p>
+                                </div>
+                            </div>
+                            <div class="info-item">
+                                <i class="bi bi-geo-alt"></i>
+                                <div class="info-content">
+                                    <h6>Last Login IP</h6>
+                                    <p>{{ user.last_login_ip|default:"N/A" }}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="d-grid gap-2">
+                            <a href="{% url 'accounts:change_password' %}" class="btn btn-outline-primary">
+                                <i class="bi bi-key"></i> Change Password
+                            </a>
+                            <a href="{% url 'healthcenter:home' %}" class="btn btn-outline-primary">
+                                <i class="bi bi-house"></i> Back to Home
+                            </a>
+                            <a href="{% url 'accounts:logout' %}" class="btn btn-outline-danger">
+                                <i class="bi bi-box-arrow-right"></i> Logout
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-8">
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                            {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+
+                <div class="profile-card">
+                    <div class="profile-body">
+                        <h4 class="section-title"><i class="bi bi-person-circle"></i> Edit Profile</h4>
+                        <form method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="{{ form.first_name.id_for_label }}">First Name</label>
+                                        {{ form.first_name }}
+                                        {% if form.first_name.errors %}
+                                            <div class="text-danger small mt-1">{{ form.first_name.errors }}</div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="{{ form.last_name.id_for_label }}">Last Name</label>
+                                        {{ form.last_name }}
+                                        {% if form.last_name.errors %}
+                                            <div class="text-danger small mt-1">{{ form.last_name.errors }}</div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="{{ form.email.id_for_label }}">Email</label>
+                                {{ form.email }}
+                                {% if form.email.errors %}
+                                    <div class="text-danger small mt-1">{{ form.email.errors }}</div>
+                                {% endif %}
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="{{ form.phone.id_for_label }}">Phone</label>
+                                        {{ form.phone }}
+                                        {% if form.phone.errors %}
+                                            <div class="text-danger small mt-1">{{ form.phone.errors }}</div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="{{ form.date_of_birth.id_for_label }}">Date of Birth</label>
+                                        {{ form.date_of_birth }}
+                                        {% if form.date_of_birth.errors %}
+                                            <div class="text-danger small mt-1">{{ form.date_of_birth.errors }}</div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="{{ form.profile_picture.id_for_label }}">Profile Picture</label>
+                                {{ form.profile_picture }}
+                                {% if form.profile_picture.errors %}
+                                    <div class="text-danger small mt-1">{{ form.profile_picture.errors }}</div>
+                                {% endif %}
+                            </div>
+
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-save"></i> Update Profile
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="profile-card">
+                    <div class="profile-body">
+                        <h4 class="section-title"><i class="bi bi-clock-history"></i> Recent Login Activity</h4>
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Date & Time</th>
+                                        <th>IP Address</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for login in recent_logins %}
+                                        <tr>
+                                            <td>{{ login.timestamp|date:"M d, Y H:i" }}</td>
+                                            <td>{{ login.ip_address }}</td>
+                                            <td>
+                                                {% if login.success %}
+                                                    <span class="badge bg-success">Success</span>
+                                                {% else %}
+                                                    <span class="badge bg-danger">Failed</span>
+                                                    <small class="text-muted ms-2">{{ login.failure_reason }}</small>
+                                                {% endif %}
+                                            </td>
+                                        </tr>
+                                    {% empty %}
+                                        <tr>
+                                            <td colspan="3" class="text-center text-muted">No login history available</td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="profile-card">
+                    <div class="profile-body">
+                        <h4 class="section-title"><i class="bi bi-pc-display"></i> Active Sessions</h4>
+                        {% for session in active_sessions %}
+                            <div class="session-item d-flex align-items-center">
+                                <div class="session-info">
+                                    <h6><i class="bi bi-laptop"></i> {{ session.user_agent|truncatewords:10 }}</h6>
+                                    <p class="mb-0 text-muted">
+                                        <small>
+                                            <i class="bi bi-geo-alt"></i> {{ session.ip_address }} |
+                                            <i class="bi bi-clock"></i> {{ session.created_at|date:"M d, Y H:i" }} |
+                                            Last active: {{ session.last_activity|timesince }} ago
+                                        </small>
+                                    </p>
+                                </div>
+                                <div class="session-actions">
+                                    <form method="post" action="{% url 'accounts:terminate_session' session.id %}" class="d-inline">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('Terminate this session?')">
+                                            <i class="bi bi-x-circle"></i> Terminate
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        {% empty %}
+                            <p class="text-muted">No active sessions</p>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="{% static 'assets/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+</body>
+</html>
