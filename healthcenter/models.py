@@ -70,3 +70,31 @@ class Home(models.Model):
 
     def __str__(self):
         return "Home Page Content"
+    
+
+class CategoryPortfolio(models.Model):
+    """Categories for Portfolio entries"""
+    name = models.CharField(max_length=100)
+    description = models.TextField(blank=True, null=True)
+
+    class Meta:
+        verbose_name = "Category Portfolio"
+        verbose_name_plural = "Category Portfolios"
+
+    def __str__(self):
+        return self.name    
+class Portfolio(models.Model):
+    """Portfolio entries for the Health Center"""
+    title = models.CharField(max_length=200)
+    category = models.ForeignKey(CategoryPortfolio, on_delete=models.SET_NULL, blank=True, null=True)
+    description = CKEditor5Field('Description', config_name='default')
+    image = models.ImageField(upload_to='portfolio/')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = "Portfolio"
+        verbose_name_plural = "Portfolios"
+
+    def __str__(self):
+        return self.title
