@@ -106,7 +106,7 @@
       <!-- Section Title -->
       <div class="container section-title" data-aos="fade-up">
         <h2>Portfolio</h2>
-        <p>Necessitatibus eius consequatur ex aliquid fuga eum quidem sint consectetur velit</p>
+        <p>งานแสดงผลงานและบริการของเรา</p>
       </div><!-- End Section Title -->
 
       <div class="container">
@@ -122,17 +122,17 @@
           </ul><!-- End Portfolio Filters -->
 
           <div class="row gy-4 isotope-container" data-aos="fade-up" data-aos-delay="200">
-
+            {% for item in portfolio_items %}
             <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-app">
               <div class="portfolio-content h-100">
-                <a href="{% static 'assets/img/portfolio/app-1.jpg' %}" data-gallery="portfolio-gallery-app" class="glightbox"><img src="{% static 'assets/img/portfolio/app-1.jpg' %}" class="img-fluid" alt=""></a>
+                <a href="{{ item.image.url }}" data-gallery="portfolio-gallery-app" class="glightbox"><img src="{{ item.image.url }}" class="img-fluid" alt=""></a>
                 <div class="portfolio-info">
-                  <h4><a href="portfolio-details.html" title="More Details">App 1</a></h4>
-                  <p>Lorem ipsum, dolor sit amet consectetur</p>
+                  <h4><a href="{% url 'healthcenter:portfolio_detail' item.pk %}" title="More Details">{{ item.title|safe }}</a></h4>
+                  <a href="{% url 'healthcenter:portfolio_detail' item.pk %}"><p>{{ item.description|safe }}</p></a>
                 </div>
               </div>
             </div><!-- End Portfolio Item -->
-
+            {% endfor %}
             <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-product">
               <div class="portfolio-content h-100">
                 <a href="{% static 'assets/img/portfolio/product-1.jpg' %}" data-gallery="portfolio-gallery-app" class="glightbox"><img src="{% static 'assets/img/portfolio/product-1.jpg' %}" class="img-fluid" alt=""></a>

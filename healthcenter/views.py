@@ -4,14 +4,15 @@ from django.contrib import messages
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from .models import About, Content, Home
-from .forms import AboutForm, ContentForm, HomeForm
+from .models import About, Content, Home, Portfolio
+from .forms import AboutForm, ContentForm, HomeForm, PortFolioForm
 
 # Create your views here.
 
 def home(request):
     posts = Home.objects.all().order_by('-id')
-    context = {'posts': posts}
+    portfolio_items = Portfolio.objects.all().order_by('-id')
+    context = {'posts': posts, 'portfolio_items': portfolio_items}
     return render(request, 'healthcenter/home.html', context)
 
 class HomeCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
@@ -192,4 +193,79 @@ class AboutDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     def delete(self, request, *args, **kwargs):
         """Handle deletion with success message"""
         messages.success(self.request, 'About Us information deleted successfully!')
+        return super().delete(request, *args, **kwargs)
+    
+class PortfolioCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
+    """Create new Portfolio entry - requires admin/staff login"""
+    model = Portfolio
+    form_class = PortFolioForm
+    template_name = 'healthcenter/portfolio_form.html'
+    success_url = reverse_lazy('healthcenter:home')
+    login_url = '/secure-admin/login/'
+
+    def test_func(self):
+        """Only allow staff and superuser"""
+        return self.request.user.is_staff or self.request.user.is_superuser
+
+    def form_valid(self, form):
+        """Handle successful form submission"""
+        messages.success(self.request, 'Portfolio entry created successfully!')
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        """Handle form validation errors"""
+        messages.error(self.request, 'Please correct the errors below.')
+        return super().form_invalid(form)
+    
+class PortfolioListView(ListView):
+    """Display list of all Portfolio entries"""
+    model = Portfolio
+    template_name = 'healthcenter/portfolio_list.html'
+    context_object_name = 'portfolio_items'
+    ordering = ['-id']
+    paginate_by = 10  # Optional: Add pagination if needed
+
+class PortfolioUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    """Update existing Portfolio entry - requires admin/staff login"""
+    model = Portfolio
+    form_class = PortFolioForm
+    template_name = 'healthcenter/portfolio_form.html'
+    success_url = reverse_lazy('healthcenter:home')
+    login_url = '/secure-admin/login/'
+
+    def test_func(self):
+        """Only allow staff and superuser"""
+        return self.request.user.is_staff or self.request.user.is_superuser
+
+    def form_valid(self, form):
+        """Handle successful form submission"""
+        messages.success(self.request, 'Portfolio entry updated successfully!')
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        """Handle form validation errors"""
+        messages.error(self.request, 'Please correct the errors below.')
+        return super().form_invalid(form)
+    
+class PortfolioDetailView(DetailView):
+    """Display detailed information about a specific Portfolio entry"""
+    model = Portfolio
+    template_name = 'healthcenter/portfolio_detail.html'
+    context_object_name = 'portfolio'   
+
+class PortfolioDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+    """Delete Portfolio entry - requires admin/staff login"""
+    model = Portfolio
+    template_name = 'healthcenter/portfolio_confirm_delete.html'
+    success_url = reverse_lazy('healthcenter:home')
+    context_object_name = 'portfolio'
+    login_url = '/secure-admin/login/'
+
+    def test_func(self):
+        """Only allow staff and superuser"""
+        return self.request.user.is_staff or self.request.user.is_superuser
+
+    def delete(self, request, *args, **kwargs):
+        """Handle deletion with success message"""
+        messages.success(self.request, 'Portfolio entry deleted successfully!')
         return super().delete(request, *args, **kwargs)

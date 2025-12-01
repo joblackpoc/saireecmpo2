@@ -1,5 +1,5 @@
 from django import forms
-from .models import About, Content, Home
+from .models import About, Content, Home, Portfolio
 from django_ckeditor_5.widgets import CKEditor5Widget
 import datetime
 
@@ -110,3 +110,27 @@ class HomeForm(forms.ModelForm):
             'banner_description_2': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Banner description 2'}),
             'banner_description_3': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Banner description 3'}),
         }
+
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Submit
+
+class PortFolioForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.add_input(Submit('submit', 'Save', css_class='btn btn-primary mt-3'))
+
+    class Meta:
+        model = Portfolio
+        fields = ['title', 'description', 'category', 'image']
+        widgets = {
+            'title': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter portfolio title'}),
+            'description': CKEditor5Widget(config_name='default')
+        }
+        labels = {
+            'title': 'Portfolio Title',
+            'description': 'Portfolio Description',
+            'category': 'Portfolio Category',
+            'image': 'Portfolio Image'
+        }
+        

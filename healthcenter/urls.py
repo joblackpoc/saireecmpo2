@@ -15,6 +15,11 @@ urlpatterns = [
 
     path('homepage/create/', views.HomeCreateView.as_view(), name='home_create'),
 
+    path('portfolio/create/', views.PortfolioCreateView.as_view(), name='portfolio_create'),
+    path('portfolio/', views.PortfolioListView.as_view(), name='portfolio_list'),
+    path('portfolio/<int:pk>/update/', views.PortfolioUpdateView.as_view(), name='portfolio_update'),
+    path('portfolio/<int:pk>/', views.PortfolioDetailView.as_view(), name='portfolio_detail'),
+    path('portfolio/<int:pk>/delete/', views.PortfolioDeleteView.as_view(), name='portfolio_delete'),
     # Content CRUD URLs
     path('content/', views.content, name='content'),
     path('content/create/', views.ContentCreateView.as_view(), name='content_create'),

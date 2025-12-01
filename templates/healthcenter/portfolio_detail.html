@@ -1,0 +1,29 @@
+{% extends 'healthcenter/base_0.html' %}
+{% load static %}
+{% block content %}
+<section id="portfolio-detail" class="portfolio section">
+  <div class="container section-title" data-aos="fade-up">
+    <h2>{{ portfolio.title }}</h2>
+    {% if portfolio.category %}
+      <p>{{ portfolio.category }}</p>
+    {% endif %}
+  </div>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8">
+        <img src="{{ portfolio.image.url }}" class="img-fluid" alt="">
+      </div>
+      <div class="col-lg-4">
+        <div class="portfolio-info">
+          <h4>Description</h4>
+          <p>{{ portfolio.description|safe }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="container mt-4 text-center">
+    <a href="{% url 'healthcenter:portfolio_update' portfolio.pk %}" class="btn btn-primary me-2">Edit</a>
+    <a href="{% url 'healthcenter:portfolio_delete' portfolio.pk %}" class="btn btn-danger">Delete</a>
+  </div>
+</section>
+{% endblock %}
